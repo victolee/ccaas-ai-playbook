@@ -1,350 +1,792 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Victor Lee | AI Solutions Architect & Deployment Strategist</title>
-    <style>
-        :root {
-            --primary: #0f172a;
-            --accent: #2563eb;
-            --text: #334155;
-            --bg-light: #f8fafc;
-            --border: #e2e8f0;
-            --card-bg: #ffffff;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Victor Lee | AI Solutions Architect & Deployment Strategist</title>
+  <style>
+    /* ── Design tokens ───────────────────────────────────────────── */
+    :root {
+      --ink:        #0d1117;   /* near-black for headings            */
+      --slate:      #1e293b;   /* diagram / code backgrounds         */
+      --body:       #374151;   /* body text                          */
+      --muted:      #64748b;   /* secondary / meta text              */
+      --accent:     #1d4ed8;   /* primary blue                       */
+      --accent-lt:  #3b82f6;   /* hover / lighter blue               */
+      --wire:       #0ea5e9;   /* cyan — diagram signal color        */
+      --bg:         #f9fafb;   /* page background                    */
+      --surface:    #ffffff;   /* card background                    */
+      --border:     #e5e7eb;   /* card / rule borders                */
+      --tag-bg:     #eff6ff;   /* skill tag fill                     */
+      --tag-border: #bfdbfe;   /* skill tag border                   */
+      --phase-bar:  #1d4ed8;   /* playbook phase bar                 */
+    }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            line-height: 1.6;
-            color: var(--text);
-            background-color: var(--bg-light);
-            margin: 0;
-            padding: 0;
-        }
+    /* ── Reset & base ────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                   Helvetica, Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--body);
+      background: var(--bg);
+      margin: 0;
+      padding: 0;
+    }
 
-        header {
-            border-bottom: 2px solid var(--border);
-            padding-bottom: 30px;
-            margin-bottom: 40px;
-        }
+    /* ── Layout ──────────────────────────────────────────────────── */
+    .container {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
 
-        h1 {
-            color: var(--primary);
-            font-size: 2.2rem;
-            margin: 0 0 10px 0;
-            letter-spacing: -0.02em;
-        }
+    /* ── Skip nav (accessibility) ────────────────────────────────── */
+    .skip-link {
+      position: absolute;
+      top: -99px;
+      left: 8px;
+      background: var(--accent);
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      z-index: 100;
+    }
+    .skip-link:focus { top: 8px; }
 
-        .subtitle {
-            font-size: 1.2rem;
-            color: var(--accent);
-            font-weight: 600;
-            margin: 0 0 15px 0;
-        }
+    /* ── Top nav ─────────────────────────────────────────────────── */
+    .top-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 16px;
+      margin-bottom: 36px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .top-nav a {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+    .top-nav a:hover { text-decoration: underline; }
 
-        .meta-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 15px;
-        }
+    /* ── Header ──────────────────────────────────────────────────── */
+    header {
+      margin-bottom: 44px;
+    }
+    header h1 {
+      font-size: 2.1rem;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.03em;
+      margin: 0 0 6px;
+    }
+    .subtitle {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin: 0 0 14px;
+    }
+    .intro {
+      max-width: 680px;
+      color: var(--body);
+      margin: 0 0 18px;
+    }
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 4px;
+    }
+    .tag {
+      background: var(--tag-bg);
+      color: var(--accent);
+      border: 1px solid var(--tag-border);
+      padding: 4px 11px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+    }
 
-        .tag {
-            background: #eff6ff;
-            color: var(--accent);
-            border: 1px solid #bfdbfe;
-            padding: 4px 12px;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
+    /* ── Section headings ────────────────────────────────────────── */
+    .section-heading {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--ink);
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 7px;
+      margin: 52px 0 22px;
+      letter-spacing: -0.01em;
+    }
 
-        .section-title {
-            color: var(--primary);
-            font-size: 1.5rem;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 8px;
-            margin-top: 40px;
-            margin-bottom: 20px;
-        }
+    /* ── Cards ───────────────────────────────────────────────────── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 26px 28px;
+      margin-bottom: 22px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .card p { margin: 0 0 10px; }
+    .card p:last-child { margin-bottom: 0; }
 
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 24px;
-            margin-bottom: 24px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
+    /* case study index badge */
+    .cs-badge {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 3px;
+      margin-bottom: 10px;
+    }
 
-        .card h3 {
-            margin-top: 0;
-            color: var(--primary);
-        }
+    /* ── Playbook timeline ───────────────────────────────────────── */
+    .playbook {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 14px;
+      margin: 18px 0 6px;
+    }
+    .phase {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--phase-bar);
+      border-radius: 6px;
+      padding: 14px 16px;
+    }
+    .phase-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 6px;
+    }
+    .phase h4 {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 0 0 6px;
+    }
+    .phase ul {
+      margin: 0;
+      padding-left: 16px;
+      font-size: 0.82rem;
+      color: var(--body);
+    }
+    .phase ul li { margin-bottom: 3px; }
 
-        .diagram {
-            background: #1e293b;
-            color: #f8fafc;
-            padding: 16px;
-            border-radius: 6px;
-            font-family: "Courier New", Courier, monospace;
-            font-size: 0.85rem;
-            white-space: pre;
-            overflow-x: auto;
-            line-height: 1.4;
-            margin: 15px 0;
-        }
+    /* ── Code / diagram blocks ───────────────────────────────────── */
+    .diagram {
+      background: var(--slate);
+      color: #e2e8f0;
+      padding: 16px 18px;
+      border-radius: 6px;
+      font-family: "SFMono-Regular", "Consolas", "Liberation Mono", Menlo, monospace;
+      font-size: 0.78rem;
+      white-space: pre;
+      overflow-x: auto;
+      line-height: 1.5;
+      margin: 14px 0 16px;
+    }
+    /* cyan highlight for signal/flow arrows in diagrams */
+    .diagram .flow { color: #38bdf8; }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 16px;
-        }
+    /* ── Bullet lists inside cards ───────────────────────────────── */
+    .card ul {
+      margin: 8px 0 0;
+      padding-left: 20px;
+    }
+    .card ul li {
+      margin-bottom: 7px;
+      font-size: 0.92rem;
+    }
+    .card ul li strong { color: var(--ink); }
 
-        .grid-item {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            padding: 16px;
-            border-radius: 6px;
-        }
+    /* ── Capability grid ─────────────────────────────────────────── */
+    .cap-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+    }
+    .cap-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 16px 18px;
+    }
+    .cap-item strong {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .cap-item p {
+      font-size: 0.83rem;
+      color: var(--body);
+      margin: 0;
+      line-height: 1.55;
+    }
 
-        .grid-item strong {
-            display: block;
-            color: var(--primary);
-            margin-bottom: 6px;
-        }
+    /* ── Credential strip ────────────────────────────────────────── */
+    .cred-strip {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px 24px;
+    }
+    .cred-strip p {
+      margin: 0 0 10px;
+      font-size: 0.88rem;
+    }
+    .cred-strip p:last-child { margin-bottom: 0; }
+    .cred-strip strong { color: var(--ink); }
+    .cert-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .cert-tag {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      color: #166534;
+      font-size: 0.77rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 4px;
+    }
 
-        ul {
-            margin: 0;
-            padding-left: 20px;
-        }
+    /* ── Footer ──────────────────────────────────────────────────── */
+    footer {
+      margin-top: 64px;
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    footer a:hover { text-decoration: underline; }
+    footer .sep { margin: 0 10px; color: var(--border); }
 
-        li {
-            margin-bottom: 8px;
-        }
+    /* ── Responsive ──────────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      header h1 { font-size: 1.6rem; }
+      .container { padding: 28px 16px 60px; }
+      .card { padding: 18px 16px; }
+      .diagram { font-size: 0.72rem; padding: 12px 14px; }
+    }
 
-        footer {
-            margin-top: 60px;
-            border-top: 1px solid var(--border);
-            padding-top: 20px;
-            text-align: center;
-            font-size: 0.9rem;
-            color: #64748b;
-        }
-
-        a {
-            color: var(--accent);
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-    </style>
+    /* ── Reduced motion ──────────────────────────────────────────── */
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
 </head>
 <body>
 
+<a class="skip-link" href="#case-studies">Skip to case studies</a>
+
 <div class="container">
 
-    <header>
-        <h1>Victor Lee</h1>
-        <div class="subtitle">AI Solutions Architect & Deployment Strategist</div>
-        <p>Specializing in enterprise CCaaS, agentic AI solution design, customer workflow discovery, technical proof-of-concept (POC) pilots, multi-agent orchestration, and value realization.</p>
-        <div class="meta-tags">
-            <span class="tag">AI Solutions Engineering</span>
-            <span class="tag">Agentic AI & MCP</span>
-            <span class="tag">Enterprise CCaaS & Collaboration</span>
-            <span class="tag">0-to-1 Playbooks</span>
-            <span class="tag">CI/CD & Validation</span>
-        </div>
-    </header>
+  <!-- ── Top navigation ─────────────────────────────────────────── -->
+  <nav class="top-nav" aria-label="Page sections">
+    <a href="#playbook">Deployment Playbook</a>
+    <a href="#case-studies">Case Studies</a>
+    <a href="#capabilities">Capabilities</a>
+    <a href="#background">Background</a>
+    <a href="#connect">Connect</a>
+  </nav>
 
-    <div class="section-title">AI Deployment Playbook (0-to-1 Motion)</div>
-    <div class="card">
-        <p>A structured engagement framework for bridging executive strategy, hands-on solution design, and technical deployment in enterprise CCaaS environments.</p>
-        <div class="diagram">
-CUSTOMER DISCOVERY         SOLUTION ARCHITECTURE        PILOT & VALIDATION         DEPLOYMENT & VALUE
-┌──────────────────┐       ┌──────────────────┐       ┌──────────────────┐       ┌──────────────────┐
-│ • Business Map   │  ──►  │ • AI Agent Design│  ──►  │ • Technical POC  │  ──►  │ • Scale & Onboard│
-│ • Use Case Priority      │ • API / RAG Model│       │ • KPI Benchmark  │       │ • Product Handoff│
-└──────────────────┘       └──────────────────┘       └──────────────────┘       └──────────────────┘
-        </div>
+  <!-- ── Header ─────────────────────────────────────────────────── -->
+  <header>
+    <h1>Victor Lee</h1>
+    <p class="subtitle">AI Solutions Architect &amp; Deployment Strategist</p>
+    <p class="intro">
+      Enterprise technology and AI solutions leader with 22+ years spanning cloud architecture,
+      CCaaS &amp; collaboration platforms, agentic AI design, and technical consulting.
+      Specializes in customer workflow discovery, multi-agent orchestration, POC validation,
+      and translating AI capability into measurable business outcomes.
+    </p>
+    <div class="tags">
+      <span class="tag">Agentic AI &amp; MCP / A2A</span>
+      <span class="tag">CCaaS &amp; Contact Center</span>
+      <span class="tag">AI Solutions Engineering</span>
+      <span class="tag">0-to-1 Deployment Playbooks</span>
+      <span class="tag">Enterprise Architecture</span>
+      <span class="tag">Kubernetes &amp; CI/CD</span>
+      <span class="tag">Executive Advisory</span>
+    </div>
+  </header>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       SECTION 1 — AI DEPLOYMENT PLAYBOOK
+  ═══════════════════════════════════════════════════════════════ -->
+  <h2 class="section-heading" id="playbook">AI Deployment Playbook — 0-to-1 Motion</h2>
+
+  <div class="card">
+    <p>
+      A structured engagement framework for enterprise AI deployments — bridging executive strategy,
+      hands-on solution architecture, and production-grade validation in CCaaS and
+      collaboration environments.
+    </p>
+
+    <div class="playbook">
+      <div class="phase">
+        <div class="phase-label">Phase 1</div>
+        <h4>Customer Discovery &amp; Alignment</h4>
         <ul>
-            <li><strong>Phase 1: Customer Discovery & Alignment:</strong> Uncover high-friction operational workflows, define clear business criteria, and map high-impact AI use cases.</li>
-            <li><strong>Phase 2: Solution Architecture & Prototyping:</strong> Design multi-agent interaction models, human-in-the-loop escalation paths, and grounded integration points.</li>
-            <li><strong>Phase 3: Validation & Pilot Execution:</strong> Run structured technical POCs, benchmark against baseline metrics, and validate system reliability via automated testing.</li>
-            <li><strong>Phase 4: Production Rollout & Feedback Loop:</strong> Execute deployment playbooks, track business ROI, and feed edge cases directly to core Product and Engineering teams.</li>
+          <li>Stakeholder interviews</li>
+          <li>Workflow mapping</li>
+          <li>Use-case prioritization</li>
+          <li>Success metric definition</li>
         </ul>
-    </div>
-
-    <div class="section-title">CCaaS & AI Solution Case Studies</div>
-
-    <!-- Case Study 1 -->
-    <div class="card">
-        <h3>1. Enterprise Multi-Agent Architecture (MCP / A2A) & CI/CD Validation</h3>
-        <p><strong>Business & Operational Challenge:</strong> Deploying multi-agent AI systems across enterprise CCaaS environments requires deterministic tool invocation, strict security boundary enforcement, and continuous automated testing to prevent regression or model drift during live customer interactions.</p>
-        <p><strong>Architecture & Design Pattern:</strong> Designed a Multi-Agent Orchestration framework leveraging the **Model Context Protocol (MCP)** for standardized remote tool execution and Agent-to-Agent (A2A) handoffs, embedded directly into a GitHub Actions CI/CD validation pipeline.</p>
-        <div class="diagram">
-[CI/CD PIPELINE: GitHub Actions] ──► AGENT EVALUATION SUITE (Prompt & Tool Benchmarks)
-                                               │ (On Pass)
-                                               ▼
-[SUPERVISOR / ROUTER AGENT] ─── (A2A Protocol) ───► [SPECIALIZED SUB-AGENTS]
-            │                                                 │
-            ├─► MCP Client                                    ├─► CRM / CCaaS Skill Agent
-            │                                                 └─► Analytics & Logging Agent
-            ▼
-[MCP SERVER / TOOL BUS] ──────► SECURE ENTERPRISE APIs (RBAC / Auth Token)
-        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-label">Phase 2</div>
+        <h4>Solution Architecture &amp; Design</h4>
         <ul>
-            <li><strong>Model Context Protocol (MCP) Integration:</strong> Abstracted backend tools behind an MCP Server architecture, allowing AI agents to dynamically discover and execute administrative REST APIs via standardized HTTP/OAuth2 protocols.</li>
-            <li><strong>Agent-to-Agent (A2A) Collaboration:</strong> Implemented a Supervisor-Worker agent pattern where an intent-routing agent delegates multi-turn tasks (e.g., account validation -> scheduling -> confirmation) to specialized sub-agents with state propagation.</li>
-            <li><strong>Automated CI/CD Validation Pipeline:</strong> Built GitHub Actions workflows that automatically run semantic evaluation datasets, JSON schema verification for MCP tool calls, and regression testing prior to pushing updated agent orchestrations to production environments.</li>
-            <li><strong>Enterprise Governance:</strong> Enforced zero-trust principles with role-based tool visibility, tokenized API authentication, and full audit trail logging for all agentic decisions.</li>
+          <li>Agent interaction model</li>
+          <li>API &amp; RAG integration design</li>
+          <li>Human-in-the-loop paths</li>
+          <li>Security &amp; RBAC scoping</li>
         </ul>
-    </div>
-
-    <!-- Case Study 2 -->
-    <div class="card">
-        <h3>2. Agentic AI for Administrative MACD Automation</h3>
-        <p><strong>Business Problem:</strong> Enterprise IT and CCaaS operations teams face significant ticket volume for routine Move, Add, Change, and Delete (MACD) requests (e.g., user provisioning, device re-assignment, queue profile modifications), leading to slow resolution times and high operational overhead.</p>
-        <p><strong>Solution Architecture & Validation:</strong> Designed an Agentic AI workflow that evaluates user intent via natural language, validates permissions, and executes provisioning commands across administrative APIs (Webex Control Hub / Enterprise Admin Tools).</p>
-        <div class="diagram">
-USER REQUEST (Chat/Email) ──► INTENT & ENTITY EXTRACTION
-                                    │
-                                    ▼
-                        AGENTIC WORKFLOW ENGINE
-                                    │
-         ┌──────────────────────────┼──────────────────────────┐
-         ▼                          ▼                          ▼
-  POLICY VALIDATION          API EXECUTION (MACD)      STATE VERIFICATION
- (Check RBAC & Scope)      (Provision/Update User)     (Verify Config Change)
-         │                          │                          │
-         └──────────────────────────┼──────────────────────────┘
-                                    ▼
-                         AUDIT LOG & NOTIFICATION
-        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-label">Phase 3</div>
+        <h4>POC Build &amp; Validation</h4>
         <ul>
-            <li><strong>Agentic Capability:</strong> Agent decomposes complex multi-step MACD tasks, executes targeted administrative REST API calls, and performs pre/post state validation.</li>
-            <li><strong>Security & Validation:</strong> Implemented strict RBAC checks, approval gates for elevated privilege changes, and comprehensive audit logging.</li>
-            <li><strong>Business Impact:</strong> Reduced MACD turnaround time from hours to seconds while freeing up IT engineering resources for strategic initiatives.</li>
+          <li>Technical POC / prototype</li>
+          <li>KPI benchmarking</li>
+          <li>CI/CD evaluation pipeline</li>
+          <li>Regression &amp; schema tests</li>
         </ul>
-    </div>
-
-    <!-- Case Study 3 -->
-    <div class="card">
-        <h3>3. NLP Virtual Assistant for Collaboration & Scheduling</h3>
-        <p><strong>Business Problem:</strong> Scheduling cross-functional meeting rooms, voice/video resources, and participant calendars within enterprise collaboration suites creates scheduling friction and administrative lag.</p>
-        <p><strong>Solution Architecture & Design:</strong> Designed a conversational virtual assistant integrating Natural Language Processing (NLP) with Webex/Collaboration APIs to automate scheduling, resource allocation, and meeting context management.</p>
-        <div class="diagram">
-NATURAL LANGUAGE INPUT ──► NLP ENGINE (Intent/Slot Filling)
-                                    │
-                                    ▼
-                         SCHEDULE ORCHESTRATOR
-                                    │
-         ┌──────────────────────────┼──────────────────────────┐
-         ▼                          ▼                          ▼
-CALENDAR API LOOKUP       RESOURCE AVAILABILITY       INVITE & SIP LINK GEN
-(Find Common Time)         (Video Endpoint/Room)       (Auto-Populate Webex)
-         │                          │                          │
-         └──────────────────────────┼──────────────────────────┘
-                                    ▼
-                     CONFIRMATION & CALENDAR SYNC
-        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-label">Phase 4</div>
+        <h4>Deployment &amp; Value Realization</h4>
         <ul>
-            <li><strong>Technical Integration:</strong> Combined Webex Messaging Bot SDKs with NLP intent parsing and Graph API calendar scheduling integrations.</li>
-            <li><strong>Handling Ambiguity:</strong> Built multi-turn conversational dialog flows to handle conflicting attendee availability and room resource constraints seamlessly.</li>
-            <li><strong>Outcome:</strong> Streamlined collaboration workflows and accelerated team scheduling turnaround across complex enterprise organizational structures.</li>
+          <li>Production rollout playbook</li>
+          <li>Business ROI tracking</li>
+          <li>Executive readout</li>
+          <li>Product feedback loop</li>
         </ul>
+      </div>
     </div>
+  </div>
 
-    <!-- Case Study 4 -->
-    <div class="card">
-        <h3>4. CCaaS Autonomous Customer Service Agent & Escalation</h3>
-        <p><strong>Business Problem:</strong> High contact volume creating tier-1 queue bottlenecks and long hold times in high-touch customer support operations.</p>
-        <p><strong>Solution Architecture:</strong> Designed a conversational AI agent pipeline leveraging Intent Recognition, RAG knowledge retrieval, and real-time backend API execution for direct transaction handling.</p>
-        <div class="diagram">
-                 CUSTOMER INTERACTION
-                          │
-                          ▼
-             INTENT & CONTEXT ANALYZER
-                          │
-         ┌────────────────┼────────────────┐
-         ▼                ▼                ▼
-   KNOWLEDGE (RAG)   ACTION (API)    WORKFLOW ENGINE
-         │                │                │
-         └────────────────┼────────────────┘
-                          ▼
-                 RESPONSE GENERATOR
-                          │
-               ┌──────────┴──────────┐
-               ▼                     ▼
-        [RESOLVED & LOGGED]   [ESCALATE TO HUMAN]
-                                     │
-                                     ▼
-                              AGENT CONTEXT HANDOFF
-        </div>
-        <ul>
-            <li><strong>Integrations:</strong> Real-time REST API hooks to CRM/ERP platforms for identity verification and account management.</li>
-            <li><strong>Safety & Human Handoff:</strong> Deterministic sentiment/confidence thresholds trigger real-time context-preserved transfers to human agents.</li>
-            <li><strong>Business Outcome:</strong> Targeted tier-1 containment up to 40%, reducing average handle time (AHT) and improving queue throughput.</li>
-        </ul>
+  <!-- ══════════════════════════════════════════════════════════════
+       SECTION 2 — CASE STUDIES
+  ═══════════════════════════════════════════════════════════════ -->
+  <h2 class="section-heading" id="case-studies">CCaaS &amp; AI Solution Case Studies</h2>
+
+  <p style="font-size:0.85rem; color:var(--muted); margin-top:-10px; margin-bottom:24px;">
+    Case studies reflect sanitized conceptual architectures and POC designs derived from professional experience.
+    Confidential customer and employer details are not disclosed.
+  </p>
+
+  <!-- ── Case Study 1 ── Multi-Agent MCP / A2A + K8s CI/CD ──────── -->
+  <div class="card" id="cs1">
+    <span class="cs-badge">Case Study 1</span>
+    <h3>Multi-Agent Orchestration — MCP, A2A &amp; Kubernetes CI/CD Validation Pipeline</h3>
+    <p>
+      <strong>Business Challenge:</strong> Deploying multi-agent AI systems into enterprise CCaaS environments
+      requires deterministic tool invocation, strict security-boundary enforcement, and continuous automated
+      testing to prevent model drift or regression during live customer interactions.
+    </p>
+    <p>
+      <strong>Architecture:</strong> Designed and prototyped a Multi-Agent Orchestration framework leveraging
+      the <strong>Model Context Protocol (MCP)</strong> for standardized remote tool execution and
+      <strong>Agent-to-Agent (A2A)</strong> handoffs. Agents are containerized and orchestrated via
+      <strong>Kubernetes</strong>, with a GitHub Actions CI/CD pipeline running evaluation suites before
+      any agent update is promoted to production.
+    </p>
+    <div class="diagram">
+┌─────────────────────────────────────────────────────────────────────────┐
+│  CI/CD PIPELINE (GitHub Actions)                                        │
+│  Pull Request ──► Prompt Regression Suite ──► JSON Schema Validation    │
+│                         │ (All tests pass)                              │
+│                         ▼                                               │
+│            Container Build ──► Push to Registry                         │
+│                         │                                               │
+│                         ▼                                               │
+│     Kubernetes Rolling Deploy (staging → prod namespace)                │
+└──────────────────────────────┬──────────────────────────────────────────┘
+                               │
+                               ▼
+               ┌──── SUPERVISOR / ROUTER AGENT ────┐
+               │         (A2A Protocol)             │
+               ▼                                    ▼
+    ┌─────────────────────┐            ┌────────────────────────┐
+    │  MCP CLIENT         │            │  SPECIALIZED SUB-AGENTS│
+    │  (Tool Discovery)   │            │  • CRM / CCaaS Skill   │
+    └────────┬────────────┘            │  • Analytics & Logging │
+             │                        └────────────────────────┘
+             ▼
+    ┌─────────────────────────────────────────────────────┐
+    │  MCP SERVER / TOOL BUS                              │
+    │  RBAC Filter ──► Auth Token ──► Enterprise REST API │
+    └─────────────────────────────────────────────────────┘</div>
+    <ul>
+      <li>
+        <strong>Model Context Protocol (MCP):</strong> Abstracted enterprise backend tools behind an MCP Server,
+        allowing agents to dynamically discover and invoke administrative APIs via standardized HTTP/OAuth2 —
+        decoupling agent logic from backend system changes.
+      </li>
+      <li>
+        <strong>Agent-to-Agent (A2A) Handoffs:</strong> Implemented a Supervisor-Worker pattern where an
+        intent-routing agent delegates multi-turn tasks (account validation → scheduling → confirmation) to
+        specialized sub-agents with full state propagation across turns.
+      </li>
+      <li>
+        <strong>Kubernetes Orchestration:</strong> Agent containers deployed and scaled in a Kubernetes cluster
+        with namespace isolation between staging and production, enabling zero-downtime rolling updates and
+        resource-scoped security policies.
+      </li>
+      <li>
+        <strong>CI/CD Evaluation Pipeline:</strong> GitHub Actions workflows run semantic evaluation datasets,
+        JSON schema verification for MCP tool calls, and regression benchmarks — blocked merges on any failure
+        before agents are promoted to production namespaces.
+      </li>
+      <li>
+        <strong>Zero-Trust Governance:</strong> Role-based tool visibility, tokenized API authentication, and
+        full audit-trail logging for all agentic decisions, aligned to enterprise compliance requirements.
+      </li>
+    </ul>
+  </div>
+
+  <!-- ── Case Study 2 ── MACD Agentic Automation ────────────────── -->
+  <div class="card" id="cs2">
+    <span class="cs-badge">Case Study 2</span>
+    <h3>Agentic AI for Administrative MACD Automation (Webex / CCaaS)</h3>
+    <p>
+      <strong>Business Challenge:</strong> Enterprise IT and CCaaS operations teams face high ticket volume for
+      routine Move, Add, Change, and Delete (MACD) requests — user provisioning, device re-assignment, queue
+      profile changes — resulting in slow resolution times and engineering resource drain.
+    </p>
+    <p>
+      <strong>Architecture:</strong> Designed and validated an agentic AI workflow that interprets natural-language
+      requests, validates requester permissions, and executes provisioning commands against administrative APIs
+      (Webex Control Hub and enterprise admin tooling), with pre- and post-state verification at every step.
+    </p>
+    <div class="diagram">
+USER REQUEST (Chat / Email / Ticketing)
+        │
+        ▼
+INTENT &amp; ENTITY EXTRACTION  (NLP + slot-filling)
+        │
+        ▼
+AGENTIC WORKFLOW ENGINE
+        │
+   ┌────┴────────────────────┬────────────────────┐
+   ▼                         ▼                    ▼
+POLICY VALIDATION       API EXECUTION          STATE VERIFICATION
+(RBAC + scope check)   (Provision / Update)   (Pre/Post diff check)
+   │                         │                    │
+   └─────────────────────────┴────────────────────┘
+                             │
+                             ▼
+               APPROVAL GATE  (elevated changes)
+                             │
+                             ▼
+               AUDIT LOG + REQUESTER NOTIFICATION</div>
+    <ul>
+      <li>
+        <strong>Agentic Decomposition:</strong> The agent breaks complex multi-step MACD tasks into atomic API
+        calls, executes them in dependency order, and performs pre/post state diffs to confirm each change
+        applied correctly before proceeding.
+      </li>
+      <li>
+        <strong>Security Controls:</strong> Strict RBAC checks at the intent layer, approval gates for
+        elevated-privilege changes, and immutable audit logging aligned to enterprise governance requirements.
+      </li>
+      <li>
+        <strong>Operational Impact:</strong> Reduced MACD turnaround from hours (manual queue) to near-real-time
+        execution, while freeing engineering resources for higher-complexity strategic work.
+      </li>
+    </ul>
+  </div>
+
+  <!-- ── Case Study 3 ── Webex NLP Chatbot ─────────────────────── -->
+  <div class="card" id="cs3">
+    <span class="cs-badge">Case Study 3</span>
+    <h3>Webex NLP Chatbot — Meeting &amp; Collaboration Resource Automation</h3>
+    <p>
+      <strong>Business Challenge:</strong> Scheduling cross-functional meetings, voice/video resources, and
+      participant calendars within large enterprise Webex environments creates scheduling friction and
+      administrative lag, especially across geographically distributed teams.
+    </p>
+    <p>
+      <strong>Architecture:</strong> Built a conversational Webex Bot integrating a Natural Language Understanding
+      (NLU) engine with Webex Messaging APIs and calendar/resource APIs to automate end-to-end scheduling and
+      meeting configuration — including SIP link generation and room-resource allocation.
+    </p>
+    <div class="diagram">
+NATURAL LANGUAGE INPUT (Webex Messaging Bot)
+        │
+        ▼
+NLU ENGINE  (Intent Classification + Slot Filling)
+  • Intent:   "Schedule meeting" / "Book room" / "Cancel"
+  • Entities: Attendees, Time, Duration, Room preference
+        │
+        ▼
+SCHEDULE ORCHESTRATOR
+        │
+   ┌────┴──────────────────────┬─────────────────────────┐
+   ▼                           ▼                         ▼
+CALENDAR API LOOKUP     RESOURCE AVAILABILITY      SIP / WEBEX LINK GEN
+(Find common free time) (Video endpoint / Room)    (Auto-populate invite)
+   │                           │                         │
+   └───────────────────────────┴─────────────────────────┘
+                               │
+                               ▼
+        MULTI-TURN DIALOG  (resolve conflicts / confirm)
+                               │
+                               ▼
+          CALENDAR SYNC + WEBEX MEETING CONFIRMATION</div>
+    <ul>
+      <li>
+        <strong>NLU Integration:</strong> Combined Webex Bot SDK with an NLU intent pipeline for intent
+        classification and entity extraction — handling meeting type, participant list, duration, and
+        preferred room or video endpoint from free-form natural language.
+      </li>
+      <li>
+        <strong>Multi-Turn Dialog:</strong> Designed conversational dialog flows to resolve scheduling conflicts,
+        clarify ambiguous attendee availability, and handle room-resource constraints — presenting alternatives
+        without requiring the user to restart the interaction.
+      </li>
+      <li>
+        <strong>Enterprise Integration:</strong> API connectors to calendar systems (Graph API), Webex Control Hub
+        for room-resource management, and SIP address generation for hybrid endpoint meetings.
+      </li>
+      <li>
+        <strong>Outcome:</strong> Eliminated manual scheduling coordination for high-frequency meeting types,
+        reducing scheduling turnaround from minutes of back-and-forth to a single conversational exchange.
+      </li>
+    </ul>
+  </div>
+
+  <!-- ── Case Study 4 ── CCaaS AI Customer Service Agent ───────── -->
+  <div class="card" id="cs4">
+    <span class="cs-badge">Case Study 4</span>
+    <h3>CCaaS Autonomous Customer Service Agent with Intelligent Escalation</h3>
+    <p>
+      <strong>Business Challenge:</strong> High contact volume creates tier-1 queue bottlenecks, long hold times,
+      and inconsistent first-contact resolution in high-touch customer support operations.
+    </p>
+    <p>
+      <strong>Architecture:</strong> Designed a conversational AI agent pipeline combining intent recognition,
+      RAG-based knowledge retrieval, and real-time backend API execution — with deterministic human escalation
+      triggered by confidence thresholds and sentiment signals.
+    </p>
+    <div class="diagram">
+CUSTOMER INTERACTION (Voice / Chat / Digital)
+        │
+        ▼
+INTENT &amp; CONTEXT ANALYZER
+        │
+   ┌────┴─────────────────────────────┐
+   ▼                                  ▼
+KNOWLEDGE (RAG)               ACTION (API Execution)
+  • Vector retrieval             • CRM identity lookup
+  • RBAC-filtered docs           • Account / order actions
+  • Grounded response            • Real-time transaction
+        │                                  │
+        └──────────────┬───────────────────┘
+                       ▼
+              RESPONSE GENERATOR
+                       │
+          ┌────────────┴────────────────┐
+          ▼                             ▼
+  [RESOLVED &amp; LOGGED]        [ESCALATE TO HUMAN AGENT]
+                                        │
+                                        ▼
+                             CONTEXT-PRESERVED HANDOFF
+                           (full transcript + intent state)</div>
+    <ul>
+      <li>
+        <strong>RAG + API Dual Path:</strong> Agent routes each intent to either a knowledge retrieval path
+        (grounded on internal documentation) or a live API execution path (CRM, order management) —
+        reducing hallucination risk for factual queries while enabling real transaction handling.
+      </li>
+      <li>
+        <strong>Deterministic Escalation:</strong> Confidence score thresholds and real-time sentiment analysis
+        trigger seamless handoff to human agents with full transcript and intent context preserved —
+        eliminating the need for customers to repeat themselves.
+      </li>
+      <li>
+        <strong>Business Outcome:</strong> Architecture targets meaningful tier-1 containment improvement,
+        reduced average handle time (AHT), and higher first-contact resolution — with all baselines
+        established via structured POC benchmarking.
+      </li>
+    </ul>
+  </div>
+
+  <!-- ── Case Study 5 ── Enterprise RAG Knowledge Assistant ──────── -->
+  <div class="card" id="cs5">
+    <span class="cs-badge">Case Study 5</span>
+    <h3>Grounded Enterprise Knowledge Assistant — RAG Pipeline Design</h3>
+    <p>
+      <strong>Business Challenge:</strong> Support and operations teams lose significant time to fragmented
+      documentation spread across SharePoint, Confluence, ticketing systems, and legacy knowledge bases —
+      leading to inconsistent answers, repeated escalations, and agent handle-time inflation.
+    </p>
+    <p>
+      <strong>Architecture:</strong> Designed a Retrieval-Augmented Generation (RAG) pipeline with vector indexing,
+      RBAC-filtered retrieval, strict grounding parameters, and a structured evaluation framework to prevent
+      hallucination and ensure answer quality.
+    </p>
+    <div class="diagram">
+ENTERPRISE CONTENT SOURCES
+  (SharePoint / Confluence / Ticketing / Legacy KB)
+        │
+        ▼
+INGESTION &amp; CHUNKING
+  • Document parsing    • Semantic chunking    • Metadata tagging
+        │
+        ▼
+EMBEDDING MODEL ──► VECTOR DATABASE (indexed + RBAC-tagged)
+                               │
+USER QUERY ──► RETRIEVAL ENGINE (RBAC filter by user role)
+                               │
+                               ▼
+         GROUNDED LLM PROMPT (retrieved context only)
+                               │
+                               ▼
+         RESPONSE + VERIFIABLE SOURCE CITATION
+                               │
+                    ┌──────────┴──────────┐
+                    ▼                     ▼
+             [ANSWER DELIVERED]   [ESCALATION FLAGGED]
+                                  (low confidence score)</div>
+    <ul>
+      <li>
+        <strong>RBAC-Filtered Retrieval:</strong> Retrieval engine applies user-role filters so agents and
+        customers only surface documents they are authorized to access — enforcing information security policy
+        at the retrieval layer, not just the UI layer.
+      </li>
+      <li>
+        <strong>Hallucination Controls:</strong> LLM prompt architecture restricts the model to retrieved context
+        only, with explicit citation of source documents in each response — enabling supervisors to audit
+        answers against source material.
+      </li>
+      <li>
+        <strong>Evaluation Framework:</strong> Benchmark test suites score response relevance, faithfulness to
+        retrieved context, and citation accuracy — enabling continuous quality assurance as the knowledge base
+        evolves.
+      </li>
+    </ul>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       SECTION 3 — CAPABILITIES
+  ═══════════════════════════════════════════════════════════════ -->
+  <h2 class="section-heading" id="capabilities">Technical Expertise &amp; Core Capabilities</h2>
+
+  <div class="cap-grid">
+    <div class="cap-item">
+      <strong>Agentic AI &amp; Orchestration</strong>
+      <p>Multi-agent patterns (MCP, A2A), agentic workflow design, LLM prompt engineering, RAG pipelines,
+      vector databases, tool-use / function-calling, agent evaluation frameworks.</p>
     </div>
-
-    <!-- Case Study 5 -->
-    <div class="card">
-        <h3>5. Grounded Enterprise Knowledge Assistant (RAG Pipeline)</h3>
-        <p><strong>Business Problem:</strong> Support team inefficiency due to fragmented documentation across disparate systems and legacy knowledge bases.</p>
-        <p><strong>Solution Architecture:</strong> Conceptualized a Retrieval-Augmented Generation (RAG) architecture using vector indexing and strict grounding parameters to prevent hallucination.</p>
-        <div class="diagram">
-ENTERPRISE DATA ──► CHUNKING / EMBEDDING ──► VECTOR DATABASE
-                                                    │
-USER QUERY ───────► RETRIEVAL & GROUNDING ──────────┘
-                         │
-                         ▼
-             STRICT LLM PROMPT / RESPONSE
-                         │
-                         ▼
-             VERIFIABLE SOURCE CITATION
-        </div>
-        <ul>
-            <li><strong>Grounding & Security:</strong> Enforced RBAC (Role-Based Access Control) filters to ensure the retrieval engine only pulls documents permissible for the authenticated user level.</li>
-            <li><strong>Evaluation & Quality:</strong> Established benchmark testing suites to score response relevance, faithfulness, and citation accuracy.</li>
-        </ul>
+    <div class="cap-item">
+      <strong>CCaaS &amp; Collaboration</strong>
+      <p>Webex Contact Center, Webex Connect, Amazon Connect, Control Hub, SIP, SBC, WebRTC,
+      CTI integrations, IVR/NLU design, PSTN routing, MACD operations.</p>
     </div>
-
-    <div class="section-title">Technical Expertise & Core Capabilities</div>
-    <div class="grid">
-        <div class="grid-item">
-            <strong>AI & Automation Frameworks</strong>
-            Agentic Workflows, MCP Architecture, A2A Patterns, RAG Pipelines, Vector DBs, Prompt Engineering, CI/CD Agent Evaluation.
-        </div>
-        <div class="grid-item">
-            <strong>CCaaS & Collaboration</strong>
-            Webex Contact Center, Webex Connect, Control Hub, SIP, SBC, WebRTC, CTI Integrations, PSTN Routing.
-        </div>
-        <div class="grid-item">
-            <strong>Cloud & Integration</strong>
-            AWS, Azure, GCP, REST APIs, JSON, SAML/SSO Identity Management, Infrastructure as Code.
-        </div>
-        <div class="grid-item">
-            <strong>Enterprise Discipline</strong>
-            Solution Validation, Pilot Design, Executive Advisory, Technical Governance, Operational Readiness.
-        </div>
+    <div class="cap-item">
+      <strong>Cloud &amp; Infrastructure</strong>
+      <p>AWS, Azure, GCP, Kubernetes, container orchestration, CI/CD pipelines (GitHub Actions),
+      REST API design, OAuth2, SAML/SSO, Infrastructure as Code.</p>
     </div>
+    <div class="cap-item">
+      <strong>Enterprise Architecture</strong>
+      <p>Solution design, pilot &amp; POC methodology, executive advisory, technical governance,
+      operational readiness, cross-functional stakeholder alignment, 0-to-1 playbook development.</p>
+    </div>
+    <div class="cap-item">
+      <strong>AI Consulting &amp; Customer Engagement</strong>
+      <p>Workflow discovery, use-case prioritization, executive workshop facilitation, business-value
+      framing, technical-to-executive translation, deployment strategy.</p>
+    </div>
+    <div class="cap-item">
+      <strong>Security &amp; Governance</strong>
+      <p>Zero-trust architecture, RBAC design, identity and access management, audit logging,
+      enterprise security policy, CISSP / CCSP credentialed.</p>
+    </div>
+  </div>
 
-    <footer>
-        <p>Victor Lee &bull; AI Solutions Architect & Deployment Strategist</p>
-        <p><a href="https://www.linkedin.com/in/victor-lee-2927b114" target="_blank">Connect on LinkedIn</a></p>
-    </footer>
+  <!-- ══════════════════════════════════════════════════════════════
+       SECTION 4 — BACKGROUND & CREDENTIALS
+  ═══════════════════════════════════════════════════════════════ -->
+  <h2 class="section-heading" id="background">Professional Background</h2>
 
-</div>
+  <div class="cred-strip">
+    <p>
+      <strong>Current Role:</strong> Product Management Architect, Cisco Systems — Enterprise architecture,
+      AI/automation strategy, CCaaS &amp; collaboration platforms, cloud solutions, and security governance.
+    </p>
+    <p>
+      <strong>Experience:</strong> 22+ years of enterprise and solution architecture spanning cloud, AI,
+      collaboration infrastructure (Webex ecosystem), contact center technology, HCM platforms, and
+      technical consulting.
+    </p>
+    <p>
+      <strong>Education:</strong> MS, Management Information Systems — UT Dallas &nbsp;|&nbsp;
+      BBA — University of Houston &nbsp;|&nbsp;
+      Product Management for Engineers — Cornell University
+    </p>
+    <p style="margin-bottom:10px;"><strong>Certifications:</strong></p>
+    <div class="cert-tags">
+      <span class="cert-tag">CISSP</span>
+      <span class="cert-tag">CCSP</span>
+      <span class="cert-tag">Azure Solutions Architect Expert</span>
+      <span class="cert-tag">Azure DevOps Engineer Expert</span>
+      <span class="cert-tag">Azure Data Engineer Associate</span>
+      <span class="cert-tag">AWS Cloud Architect</span>
+      <span class="cert-tag">GCP Cloud Architect</span>
+    </div>
+  </div>
 
+  <!-- ══════════════════════════════════════════════════════════════
+       FOOTER / CONNECT
+  ═══════════════════════════════════════════════════════════════ -->
+  <footer id="connect">
+    <p>
+      <strong>Victor Lee</strong> &mdash; AI Solutions Architect &amp; Deployment Strategist
+    </p>
+    <p>
+      <a href="https://www.linkedin.com/in/victor-lee-2927b114" target="_blank" rel="noopener">
+        Connect on LinkedIn
+      </a>
+      <span class="sep">|</span>
+      Dallas / Plano, TX &mdash; Open to Remote Roles
+    </p>
+    <p style="margin-top:12px; font-size:0.8rem; color:#94a3b8;">
+      Case studies reflect sanitized conceptual architectures derived from professional experience.
+      No confidential employer or customer information is disclosed.
+    </p>
+  </footer>
+
+</div><!-- /.container -->
 </body>
 </html>
